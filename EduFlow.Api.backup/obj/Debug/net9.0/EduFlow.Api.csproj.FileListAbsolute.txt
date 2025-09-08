@@ -1,0 +1,6 @@
+/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/obj/Debug/net9.0/EduFlow.Api.csproj.AssemblyReference.cache
+/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/obj/Debug/net9.0/EduFlow.Api.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/obj/Debug/net9.0/EduFlow.Api.AssemblyInfoInputs.cache
+/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/obj/Debug/net9.0/EduFlow.Api.AssemblyInfo.cs
+/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/obj/Debug/net9.0/EduFlow.Api.csproj.CoreCompileInputs.cache
+/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/obj/Debug/net9.0/EduFlow.Api.MvcApplicationPartsAssemblyInfo.cache

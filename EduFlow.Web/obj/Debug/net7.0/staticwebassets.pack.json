@@ -1,0 +1,97 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/bin/Debug/net7.0/wwwroot/_framework/blazor.webassembly.js",
+      "PackagePath": "staticwebassets/_framework/blazor.webassembly.js"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/obj/Debug/net7.0/scopedcss/bundle/EduFlow.Web.styles.css",
+      "PackagePath": "staticwebassets/EduFlow.Web.styles.css"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/app.css",
+      "PackagePath": "staticwebassets/css/app.css"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/css/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/css/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/FONT-LICENSE",
+      "PackagePath": "staticwebassets/css/open-iconic"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/ICON-LICENSE",
+      "PackagePath": "staticwebassets/css/open-iconic"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/README.md",
+      "PackagePath": "staticwebassets/css/open-iconic/README.md"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/font/css/open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets/css/open-iconic/font/css/open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/font/fonts/open-iconic.eot",
+      "PackagePath": "staticwebassets/css/open-iconic/font/fonts/open-iconic.eot"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/font/fonts/open-iconic.otf",
+      "PackagePath": "staticwebassets/css/open-iconic/font/fonts/open-iconic.otf"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/font/fonts/open-iconic.svg",
+      "PackagePath": "staticwebassets/css/open-iconic/font/fonts/open-iconic.svg"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/font/fonts/open-iconic.ttf",
+      "PackagePath": "staticwebassets/css/open-iconic/font/fonts/open-iconic.ttf"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/css/open-iconic/font/fonts/open-iconic.woff",
+      "PackagePath": "staticwebassets/css/open-iconic/font/fonts/open-iconic.woff"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/icon-192.png",
+      "PackagePath": "staticwebassets/icon-192.png"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Web/wwwroot/sample-data/weather.json",
+      "PackagePath": "staticwebassets/sample-data/weather.json"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.EduFlow.Web.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.EduFlow.Web.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.build.EduFlow.Web.props",
+      "PackagePath": "build\\EduFlow.Web.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.EduFlow.Web.props",
+      "PackagePath": "buildMultiTargeting\\EduFlow.Web.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildTransitive.EduFlow.Web.props",
+      "PackagePath": "buildTransitive\\EduFlow.Web.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,6 @@
+@EduFlow.Web_HostAddress = http://localhost:5293
+
+GET {{EduFlow.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

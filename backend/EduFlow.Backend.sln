@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduFlow.Web", "EduFlow.Web\EduFlow.Web.csproj", "{14703C06-0080-473A-B7D8-CD207E83D97B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduFlow.DataAccess", "EduFlow.DataAccess\EduFlow.DataAccess.csproj", "{C3439D8D-56DD-4771-81E4-A07401DA97F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduFlow.Services", "EduFlow.Services\EduFlow.Services.csproj", "{819E34A9-5CD8-4760-AD01-0FD7BAEC93ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14703C06-0080-473A-B7D8-CD207E83D97B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14703C06-0080-473A-B7D8-CD207E83D97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14703C06-0080-473A-B7D8-CD207E83D97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14703C06-0080-473A-B7D8-CD207E83D97B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3439D8D-56DD-4771-81E4-A07401DA97F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3439D8D-56DD-4771-81E4-A07401DA97F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3439D8D-56DD-4771-81E4-A07401DA97F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3439D8D-56DD-4771-81E4-A07401DA97F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{819E34A9-5CD8-4760-AD01-0FD7BAEC93ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{819E34A9-5CD8-4760-AD01-0FD7BAEC93ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{819E34A9-5CD8-4760-AD01-0FD7BAEC93ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{819E34A9-5CD8-4760-AD01-0FD7BAEC93ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

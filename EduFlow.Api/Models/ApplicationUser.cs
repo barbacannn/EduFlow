@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
-namespace EduFlow.Api.Models
+namespace EduFlow.Api.Models;
+
+public class ApplicationUser : IdentityUser
 {
-    public class ApplicationUser
-    {
-        
-    }
+    public string DisplayName { get; set; } = "";
+    public string RoleName { get; set; } = "Student";
 }

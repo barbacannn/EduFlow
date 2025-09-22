@@ -1,12 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using EduFlow.Api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace ayushmisra.Desktop.EduFlow.EduFlow.Data
+namespace EduFlow.Api.Data;
+
+public class EduFlowDbContext : IdentityDbContext<ApplicationUser>
 {
-    public class EduFlowDbContext
-    {
-        
-    }
+    public EduFlowDbContext(DbContextOptions<EduFlowDbContext> options) : base(options) {}
+
+    public DbSet<Course> Courses => Set<Course>();
+    public DbSet<Assignment> Assignments => Set<Assignment>();
+    public DbSet<Submission> Submissions => Set<Submission>();
+    public DbSet<Announcement> Announcements => Set<Announcement>();
 }

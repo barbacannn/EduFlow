@@ -3261,11 +3261,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/EduFlow.Api.csproj",
+      "projectUniqueName": "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Api/EduFlow.Api.csproj",
       "projectName": "EduFlow.Api",
-      "projectPath": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/EduFlow.Api.csproj",
+      "projectPath": "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Api/EduFlow.Api.csproj",
       "packagesPath": "/Users/ayushmisra/.nuget/packages/",
-      "outputPath": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Api/obj/",
+      "outputPath": "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/ayushmisra/.nuget/NuGet/NuGet.Config"

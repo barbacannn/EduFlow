@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj": {}
+    "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj": {}
   },
   "projects": {
-    "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj": {
+    "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj",
+        "projectUniqueName": "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj",
         "projectName": "EduFlow.Shared",
-        "projectPath": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj",
+        "projectPath": "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Shared/EduFlow.Shared.csproj",
         "packagesPath": "/Users/ayushmisra/.nuget/packages/",
-        "outputPath": "/Users/ayushmisra/Desktop/EduFlow/EduFlow/EduFlow.Shared/obj/",
+        "outputPath": "/Users/ayushmisra/Desktop/projects/EduFlow/EduFlow/EduFlow.Shared/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/ayushmisra/.nuget/NuGet/NuGet.Config"

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EduFlow.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0b3c0978b23d45c1f6f1f8ba8813a0f62278409")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+093c044209136c7f478eec3cb8a6b045467ba2b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("EduFlow.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EduFlow.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

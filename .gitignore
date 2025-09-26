@@ -20,3 +20,5 @@ Thumbs.db
 
 # Blazor WebAssembly
 wwwroot/lib/
+
+.idea/

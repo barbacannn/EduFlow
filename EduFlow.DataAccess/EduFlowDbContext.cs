@@ -16,20 +16,13 @@ public class EduFlowDbContext : IdentityDbContext<ApplicationUser, IdentityRole<
     {
         base.OnModelCreating(modelBuilder);
 
-        /*modelBuilder.Entity<ApplicationUser>().HasData(new ApplicationUser
+        modelBuilder.Entity<Course>(b =>
         {
-            Id = Guid.Parse("..."),
-            UserName = "teacher@example.com",
-            Email = "teacher@example.com"
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Code).IsRequired().HasMaxLength(32);
+            b.Property(x => x.Name).IsRequired().HasMaxLength(200);
+            b.HasIndex(x => x.Code).IsUnique();
         });
-
-        modelBuilder.Entity<Course>().HasData(new Course
-        {
-            Id = Guid.Parse("..."),
-            Code = "DEV101",
-            Name = "Dev DB seeded",
-            TeacherId = Guid.Parse("...")
-        });*/
     }
 
 

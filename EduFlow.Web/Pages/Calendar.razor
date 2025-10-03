@@ -1,0 +1,131 @@
+@page "/calendar"
+
+<PageTitle>Calendar</PageTitle>
+
+<div class="calendar-container">
+    <div class="calendar-header">
+        <button class="nav-btn" @onclick="GoToPreviousMonth" aria-label="Previous Month">&#x276E;</button>
+        <div class="month-label">@CurrentMonth.ToString("MMMM yyyy")</div>
+        <button class="nav-btn" @onclick="GoToNextMonth" aria-label="Next Month">&#x276F;</button>
+    </div>
+
+    <div class="calendar-grid">
+        @foreach (var dayName in DayNames)
+        {
+            <div class="day-name">@dayName</div>
+        }
+
+        @foreach (var day in CalendarDays)
+        {
+            var isToday = day.Date.Date == DateTime.Today;
+            var isOtherMonth = day.Date.Month != CurrentMonth.Month;
+            var items = GetAssignmentsForDate(day.Date);
+            <div class="day-cell @(isOtherMonth ? "other-month" : null) @(isToday ? "today" : null)">
+                <div class="date-badge">@day.Date.Day</div>
+                @if (items.Count > 0)
+                {
+                    <ul class="events">
+                        @foreach (var a in items)
+                        {
+                            <li class="event" title="@a.Title">
+                                <span class="dot"></span>
+                                <span class="event-title">@a.Title</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="calendar-footer">
+        <button class="today-btn" @onclick="GoToToday">Today</button>
+    </div>
+</div>
+
+<section class="upcoming">
+    <h3>Upcoming Assignments</h3>
+    @if (SortedAssignments.Count == 0)
+    {
+        <p>No upcoming assignments.</p>
+    }
+    else
+    {
+        <ul class="upcoming-list">
+            @foreach (var item in SortedAssignments)
+            {
+                <li>
+                    <strong>@item.Title</strong> — @item.DueDate.ToString("ddd, MMM d")
+                </li>
+            }
+        </ul>
+    }
+</section>
+
+@code {
+    private DateTime CurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+    private List<Assignment> Assignments = new List<Assignment>
+{
+new Assignment { Title = "Math Homework", DueDate = DateTime.Today.AddDays(1).Date.AddHours(9) },
+new Assignment { Title = "Science Project", DueDate = DateTime.Today.AddDays(3).Date.AddHours(14) },
+new Assignment { Title = "History Essay", DueDate = DateTime.Today.AddDays(7).Date.AddHours(23) }
+};
+
+    private IReadOnlyList<string> DayNames => new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
+    private List<CalendarDay> CalendarDays => BuildCalendarDays(CurrentMonth);
+
+    private List<Assignment> SortedAssignments => Assignments
+    .OrderBy(a => a.DueDate)
+    .ToList();
+
+    private List<CalendarDay> BuildCalendarDays(DateTime month)
+    {
+        var firstOfMonth = new DateTime(month.Year, month.Month, 1);
+        var startOffset = (int)firstOfMonth.DayOfWeek; // 0=Sun..6=Sat
+        var startDate = firstOfMonth.AddDays(-startOffset);
+
+        var days = new List<CalendarDay>(42); // 6 weeks grid
+        for (int i = 0; i < 42; i++)
+        {
+            var date = startDate.AddDays(i);
+            days.Add(new CalendarDay { Date = date });
+        }
+        return days;
+    }
+
+    private List<Assignment> GetAssignmentsForDate(DateTime date)
+    {
+        return Assignments
+        .Where(a => a.DueDate.Date == date.Date)
+        .OrderBy(a => a.DueDate)
+        .ToList();
+    }
+
+    private void GoToPreviousMonth()
+    {
+        CurrentMonth = CurrentMonth.AddMonths(-1);
+    }
+
+    private void GoToNextMonth()
+    {
+        CurrentMonth = CurrentMonth.AddMonths(1);
+    }
+
+    private void GoToToday()
+    {
+        CurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+    }
+
+    public class Assignment
+    {
+        public string Title { get; set; } = string.Empty;
+        public DateTime DueDate { get; set; }
+    }
+
+    private class CalendarDay
+    {
+        public DateTime Date { get; set; }
+    }
+}

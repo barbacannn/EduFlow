@@ -7,16 +7,13 @@ public class EduFlowDbContextFactory : IDesignTimeDbContextFactory<EduFlowDbCont
 {
     public EduFlowDbContext CreateDbContext(string[] args)
     {
-        var dbPath = Path.Combine(
-            Directory.GetParent(Directory.GetCurrentDirectory())!.FullName,
-            ".data",
-            "eduflow.dev.db"
-        );
-
-        Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
+        var dataDir = Path.Combine(Directory.GetCurrentDirectory(), ".data");
+        Directory.CreateDirectory(dataDir);
+        var dbPath = Path.Combine(dataDir, "eduflow.dev.db");
 
         var options = new DbContextOptionsBuilder<EduFlowDbContext>()
-            .UseSqlite($"Data Source={dbPath}")
+            .UseSqlite($"Data Source={dbPath}",
+                b => b.MigrationsAssembly("EduFlow.DataAccess"))
             .Options;
 
         return new EduFlowDbContext(options);

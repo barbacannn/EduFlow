@@ -3,15 +3,13 @@ using EduFlow.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-public static class DevSeeder
+public static class DevIdentitySeeder
 {
     public static async Task SeedAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<EduFlowDbContext>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        
-        await db.Database.MigrateAsync();
 
         var email = "teacher@example.com";
         var teacher = await userManager.FindByEmailAsync(email);
@@ -23,16 +21,15 @@ public static class DevSeeder
                 Email = email,
                 EmailConfirmed = true
             };
-            
+
             var create = await userManager.CreateAsync(teacher, "Dev!Pass123");
             if (!create.Succeeded)
             {
-                throw new InvalidOperationException("Failed to create dev user: " + 
+                throw new InvalidOperationException("Failed to create dev user: " +
                                                     string.Join(", ", create.Errors.Select(e => $"{e.Code}:{e.Description}")));
             }
 
-            var exists = await db.Courses.AnyAsync(c => c.Code == "DEV101");
-            if (!exists)
+            if (!await db.Courses.AnyAsync(c => c.Code == "DEV101"))
             {
                 db.Courses.Add(new Course
                 {

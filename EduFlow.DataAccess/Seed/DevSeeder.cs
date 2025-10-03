@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using EduFlow.DataAccess.Entities;
 
 namespace EduFlow.DataAccess;
@@ -11,14 +12,25 @@ public class DevSeeder : IDataSeeder
 {
     public async Task SeedAsync(EduFlowDbContext db)
     {
-        if (!db.Courses.Any())
+        var teacherId = await db.Users
+            .Where(u => u.Email == "teacher@example.com")
+            .Select(u => u.Id)
+            .FirstOrDefaultAsync();
+
+        if (teacherId == Guid.Empty) return;
+
+        if (!await db.Courses.AnyAsync(c => c.Code == "DEV101"))
         {
             db.Courses.Add(new Course
             {
+                Id = Guid.NewGuid(),
                 Code = "DEV101",
                 Name = "Dev DB seeded",
-                TeacherId = Guid.NewGuid()
+                TeacherId = teacherId,
+                CreatedAtUtc = DateTimeOffset.UtcNow,
+                IsDeleted = false
             });
+
             await db.SaveChangesAsync();
         }
     }

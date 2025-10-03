@@ -19,7 +19,7 @@ public class EduFlowDbContext : IdentityDbContext<ApplicationUser, IdentityRole<
         modelBuilder.Entity<Course>(b =>
         {
             b.HasKey(x => x.Id);
-            b.Property(x => x.Code).IsRequired().HasMaxLength(32);
+            b.Property(x => x.Code).IsRequired().HasMaxLength(32).IsRequired();
             b.Property(x => x.Name).IsRequired().HasMaxLength(200);
             b.HasIndex(x => x.Code).IsUnique();
         });

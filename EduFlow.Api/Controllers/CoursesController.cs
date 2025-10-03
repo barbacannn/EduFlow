@@ -18,7 +18,7 @@ public class CoursesController(ICourseService service) : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<CourseDto>> GetById(Guid id, CancellationToken ct = default)
+    public async Task<ActionResult<CourseDto>> GetCourseById(Guid id, CancellationToken ct = default)
     {
         var course = await service.GetCourseById(id, ct);
         if (course is null) return NotFound();
@@ -26,14 +26,14 @@ public class CoursesController(ICourseService service) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCourseRequest req, CancellationToken ct = default)
+    public async Task<IActionResult> CreateCourse([FromBody] CreateCourseRequest req, CancellationToken ct = default)
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
         {
             var course = await service.CreateCourse(req.Code, req.Name, req.TeacherId, ct);
             var dto = new CourseDto(course.Id, course.Code, course.Name, course.TeacherId, course.CreatedAtUtc, course.ModifiedAtUtc);
-            return CreatedAtAction(nameof(GetById), new { id = course.Id }, dto);
+            return CreatedAtAction(nameof(GetCourseById), new { id = course.Id }, dto);
         }
         catch (ArgumentException ex)
         {
@@ -48,7 +48,7 @@ public class CoursesController(ICourseService service) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCourseRequest req, CancellationToken ct = default)
+    public async Task<IActionResult> UpdateCourse(Guid id, [FromBody] UpdateCourseRequest req, CancellationToken ct = default)
     {
         if (!ModelState.IsValid) return ValidationProblem(ModelState);
         try
@@ -69,7 +69,7 @@ public class CoursesController(ICourseService service) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
+    public async Task<IActionResult> DeleteCourse(Guid id, CancellationToken ct = default)
     {
         var ok = await service.SoftDeleteCourse(id, ct);
         return ok ? NoContent() : NotFound();

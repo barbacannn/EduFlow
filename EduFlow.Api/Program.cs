@@ -2,6 +2,7 @@ using EduFlow.DataAccess;
 using EduFlow.DataAccess.Entities;
 using EduFlow.Services.Abstractions;
 using EduFlow.Services.Modules.Courses;
+using EduFlow.Services.Modules.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
@@ -29,6 +30,7 @@ builder.Services
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDataProtection();
 builder.Services.AddScoped<IDataSeeder, DevSeeder>();
 
@@ -43,10 +45,10 @@ using (var scope = app.Services.CreateScope())
 
     if (env.IsDevelopment())
     {
+        await DevIdentitySeeder.SeedAsync(app.Services);
+
         var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();
         await seeder.SeedAsync(db);
-
-        await DevIdentitySeeder.SeedAsync(app.Services);
     }
 }
 

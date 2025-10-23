@@ -1,0 +1,73 @@
+@using EduFlow.Web.Models
+
+<div class="card hover:shadow-lg transition-shadow">
+    <div class="card-header">
+        <div class="flex items-center justify-between">
+            <span class="text-2xl font-semibold leading-none tracking-tight">@Title</span>
+            <div class="badge badge-secondary">@Assignments.Count</div>
+        </div>
+    </div>
+    <div class="card-content">
+        @if (Assignments.Count == 0)
+        {
+            <div class="text-center py-8 text-muted-foreground">
+                <svg class="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p>@(string.IsNullOrEmpty(EmptyMessage) ? "No assignments" : EmptyMessage)</p>
+            </div>
+        }
+        else
+        {
+            <div class="space-y-3">
+                @foreach (var assignment in Assignments)
+                {
+                    <div class="p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-medium text-sm truncate mb-1">
+                                    @assignment.Title
+                                </h4>
+                                @if (!string.IsNullOrEmpty(assignment.Subject))
+                                {
+                                    <div class="badge badge-secondary text-xs mb-2">
+                                        @assignment.Subject
+                                    </div>
+                                }
+                                <div class="flex items-center gap-3 text-xs text-muted-foreground">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span>@assignment.DueDate.ToString("MMM d")</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span>@assignment.DueDate.ToString("h:mm tt")</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-ghost btn-sm h-8 w-8 p-0 flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public List<Assignment> Assignments { get; set; } = new();
+    [Parameter] public string? EmptyMessage { get; set; }
+}

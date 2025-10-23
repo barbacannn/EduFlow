@@ -1,0 +1,73 @@
+@using EduFlow.Web.Models
+
+<div class="card hover:shadow-lg transition-all duration-300 border-l-4 hover:scale-[1.02]" 
+     style="border-left-color: @GetUrgencyColor()">
+    <div class="p-4">
+        <div class="flex items-start justify-between gap-4">
+            <div class="flex-1 space-y-2">
+                <h3 class="font-semibold text-lg text-foreground">
+                    @Assignment.Title
+                </h3>
+                
+                @if (!string.IsNullOrEmpty(Assignment.Subject))
+                {
+                    <div class="badge badge-secondary text-xs">
+                        @Assignment.Subject
+                    </div>
+                }
+                
+                <div class="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>@Assignment.DueDate.ToString("MMM d, yyyy")</span>
+                    </div>
+                    
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>@Assignment.DueDate.ToString("h:mm tt")</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="badge @GetUrgencyBadgeClass() whitespace-nowrap">
+                @GetUrgencyText()
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Assignment Assignment { get; set; } = new();
+
+    private int DaysUntilDue => (int)Math.Ceiling((Assignment.DueDate - DateTime.Now).TotalDays);
+
+    private string GetUrgencyColor()
+    {
+        var days = DaysUntilDue;
+        if (days < 0) return "#ef4444"; // red
+        if (days == 0) return "#ef4444"; // red
+        if (days <= 3) return "#f59e0b"; // amber
+        return "#10b981"; // emerald
+    }
+
+    private string GetUrgencyBadgeClass()
+    {
+        var days = DaysUntilDue;
+        if (days < 0 || days == 0) return "badge-error";
+        if (days <= 3) return "badge-warning";
+        return "badge-success";
+    }
+
+    private string GetUrgencyText()
+    {
+        var days = DaysUntilDue;
+        if (days < 0) return "Overdue";
+        if (days == 0) return "Due Today";
+        if (days == 1) return "Due Tomorrow";
+        return $"{days} days left";
+    }
+}

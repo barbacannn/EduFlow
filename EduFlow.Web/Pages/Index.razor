@@ -1,0 +1,11 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+
+<PageTitle>EduFlow</PageTitle>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo("/dashboard");
+    }
+}

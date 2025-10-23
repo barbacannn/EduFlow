@@ -1,0 +1,30 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio / Rider / VS Code
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+# Blazor WebAssembly
+wwwroot/lib/
+
+.idea/
+.data/*.db
+.data/*.db-shm
+.data/*.db-wal
+
+*.DotSettings.user
+

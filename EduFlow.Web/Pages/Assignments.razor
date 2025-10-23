@@ -1,0 +1,86 @@
+@page "/assignments"
+@using EduFlow.Web.Models
+@using BlazorBootstrap
+
+<PageTitle>Assignments</PageTitle>
+
+<h1 class="text-3xl font-bold mb-4">Assignment Tracker</h1>
+
+<div class="grid md:grid-cols-2 gap-8">
+    <!-- Left: Calendar -->
+    <div>
+        <h2 class="text-xl font-semibold mb-3">Calendar View</h2>
+        <Calendar @ref="calendar" OnDateClick="HandleDateClick" />
+    </div>
+
+    <!-- Right: Add Assignment Form -->
+    <div>
+        <h2 class="text-xl font-semibold mb-3">Add New Assignment</h2>
+
+        <div class="space-y-2">
+            <input type="text" @bind="NewAssignment.Title" placeholder="Title" class="form-control" />
+            <input type="text" @bind="NewAssignment.Subject" placeholder="Subject" class="form-control" />
+            <textarea @bind="NewAssignment.Description" placeholder="Description" class="form-control"></textarea>
+            <InputDate @bind-Value="NewAssignment.DueDate" class="form-control" />
+            <button class="btn btn-primary" @onclick="AddAssignment">Add</button>
+        </div>
+    </div>
+</div>
+
+<hr class="my-6" />
+
+<!-- List View -->
+<h2 class="text-xl font-semibold mb-4">All Assignments</h2>
+<ul class="space-y-3">
+    @foreach (var assignment in AssignmentsList.OrderBy(a => a.DueDate))
+    {
+        <li class="p-3 border rounded shadow-sm flex justify-between">
+            <div>
+                <strong>@assignment.Title</strong> - @assignment.Subject  
+                <br />
+                <small>@assignment.DueDate.ToShortDateString()</small>
+            </div>
+            <button class="btn btn-danger btn-sm" @onclick="@(() => RemoveAssignment(assignment.Id))">Remove</button>
+        </li>
+    }
+</ul>
+
+@code {
+    private Calendar? calendar;
+    private List<Assignment> AssignmentsList = new();
+    private Assignment NewAssignment = new();
+
+    protected override void OnInitialized()
+    {
+        // Example assignments
+        AssignmentsList = new List<Assignment>
+        {
+            new Assignment { Id = 1, Title = "Math Homework", Subject = "Math", DueDate = DateTime.Today.AddDays(1), Description = "Chapter 5 Problems" },
+            new Assignment { Id = 2, Title = "Science Project", Subject = "Science", DueDate = DateTime.Today.AddDays(3), Description = "Plant Growth Report" }
+        };
+    }
+
+    private void HandleDateClick(DateTime date)
+    {
+        NewAssignment.DueDate = date;
+    }
+
+    private void AddAssignment()
+    {
+        if (!string.IsNullOrWhiteSpace(NewAssignment.Title))
+        {
+            NewAssignment.Id = AssignmentsList.Count + 1;
+            AssignmentsList.Add(NewAssignment);
+            NewAssignment = new Assignment();
+        }
+    }
+
+    private void RemoveAssignment(int id)
+    {
+        var item = AssignmentsList.FirstOrDefault(a => a.Id == id);
+        if (item != null)
+        {
+            AssignmentsList.Remove(item);
+        }
+    }
+}

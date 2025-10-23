@@ -1,0 +1,114 @@
+@page "/dashboard"
+@using EduFlow.Web.Models
+@using EduFlow.Web.Shared
+
+<PageTitle>Dashboard - EduFlow</PageTitle>
+
+<div class="space-y-8">
+    <GreetingHeader />
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <AssignmentWidget Title="Due Today" Assignments="@GetDueTodayAssignments()"
+            EmptyMessage="No assignments due today" />
+
+        <AssignmentWidget Title="Due This Week" Assignments="@GetDueThisWeekAssignments()"
+            EmptyMessage="No assignments due this week" />
+
+        <AssignmentWidget Title="Overdue" Assignments="@GetOverdueAssignments()"
+            EmptyMessage="No overdue assignments" />
+    </div>
+
+    <div class="space-y-4">
+        <h2 class="text-2xl font-bold">Recent Assignments</h2>
+        <div class="space-y-4">
+            @foreach (var assignment in GetRecentAssignments())
+            {
+                <AssignmentCard Assignment="@assignment" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Assignment> AssignmentList = new List<Assignment>
+{
+new Assignment
+{
+Id = 1,
+Title = "Math Homework - Chapter 5",
+DueDate = DateTime.Today.AddDays(1).Date.AddHours(9),
+Subject = "Mathematics",
+Priority = 2
+},
+new Assignment
+{
+Id = 2,
+Title = "Science Project Presentation",
+DueDate = DateTime.Today.AddDays(3).Date.AddHours(14),
+Subject = "Science",
+Priority = 3
+},
+new Assignment
+{
+Id = 3,
+Title = "History Essay - World War II",
+DueDate = DateTime.Today.AddDays(7).Date.AddHours(23),
+Subject = "History",
+Priority = 2
+},
+new Assignment
+{
+Id = 4,
+Title = "English Reading Assignment",
+DueDate = DateTime.Today.AddDays(-2).Date.AddHours(10),
+Subject = "English",
+Priority = 1,
+Completed = false
+},
+new Assignment
+{
+Id = 5,
+Title = "Chemistry Lab Report",
+DueDate = DateTime.Today.Date.AddHours(16),
+Subject = "Chemistry",
+Priority = 3
+}
+};
+
+    private List<Assignment> GetDueTodayAssignments()
+    {
+        var today = DateTime.Today;
+        return AssignmentList
+        .Where(a => a.DueDate.Date == today && !a.Completed)
+        .OrderBy(a => a.DueDate)
+        .ToList();
+    }
+
+    private List<Assignment> GetDueThisWeekAssignments()
+    {
+        var today = DateTime.Today;
+        var endOfWeek = today.AddDays(7);
+        return AssignmentList
+        .Where(a => a.DueDate.Date > today && a.DueDate.Date <= endOfWeek && !a.Completed)
+        .OrderBy(a => a.DueDate)
+        .ToList();
+    }
+
+    private List<Assignment> GetOverdueAssignments()
+    {
+        var today = DateTime.Today;
+        return AssignmentList
+        .Where(a => a.DueDate.Date < today && !a.Completed)
+        .OrderBy(a => a.DueDate)
+        .ToList();
+    }
+
+    private List<Assignment> GetRecentAssignments()
+    {
+        return AssignmentList
+        .Where(a => !a.Completed)
+        .OrderBy(a => a.DueDate)
+        .Take(5)
+        .ToList();
+    }
+}

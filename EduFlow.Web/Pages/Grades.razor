@@ -1,0 +1,169 @@
+@page "/grades"
+@using System.Linq
+
+<PageTitle>Grades - EduFlow</PageTitle>
+
+<div class="space-y-6">
+    <h1 class="text-3xl font-bold">Gradebook</h1>
+
+    <!-- Add / Edit Grade Form -->
+    <div class="card p-4 space-y-3">
+        <h2 class="text-xl font-semibold">@(EditingGrade != null ? "Edit Grade" : "Add New Grade")</h2>
+
+        <div class="grid md:grid-cols-2 gap-3">
+            <input type="text" @bind="NewGrade.Subject" placeholder="Subject" class="form-control" />
+            <input type="number" @bind="NewGrade.Score" placeholder="Score (0-100)" class="form-control" />
+            <input type="number" @bind="NewGrade.Weight" placeholder="Weight (%)" class="form-control" />
+        </div>
+
+        <button class="btn btn-primary" @onclick="SaveGrade">
+            @(EditingGrade != null ? "Update Grade" : "Add Grade")
+        </button>
+        @if (EditingGrade != null)
+        {
+            <button class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+        }
+    </div>
+
+    <!-- Grade List -->
+    <div class="card p-4">
+        <h2 class="text-xl font-semibold mb-3">Grades Overview</h2>
+
+        @if (!GradeList.Any())
+        {
+            <p class="text-muted-foreground">No grades recorded yet.</p>
+        }
+        else
+        {
+            <table class="table-auto w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border p-2">Subject</th>
+                        <th class="border p-2">Score</th>
+                        <th class="border p-2">Weight (%)</th>
+                        <th class="border p-2">Weighted Score</th>
+                        <th class="border p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var grade in GradeList)
+                    {
+                        <tr>
+                            <td class="border p-2">@grade.Subject</td>
+                            <td class="border p-2">@grade.Score</td>
+                            <td class="border p-2">@grade.Weight</td>
+                            <td class="border p-2">@((grade.Score * grade.Weight / 100).ToString("F2"))</td>
+                            <td class="border p-2 space-x-2">
+                                <button class="btn btn-sm btn-warning" @onclick="@(() => EditGrade(grade.Id))">Edit</button>
+                                <button class="btn btn-sm btn-danger" @onclick="@(() => DeleteGrade(grade.Id))">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <!-- Weighted Average -->
+    @if (GradeList.Any())
+    {
+        <div class="card p-4">
+            <h3 class="text-xl font-semibold">Weighted Average</h3>
+            <p class="text-lg font-bold text-primary">@CalculateWeightedAverage().ToString("F2")%</p>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Grade> GradeList = new();
+    private Grade NewGrade = new();
+    private Grade? EditingGrade;
+
+    protected override void OnInitialized()
+    {
+        // Example data
+        GradeList = new List<Grade>
+        {
+            new Grade { Id = 1, Subject = "Math", Score = 85, Weight = 30 },
+            new Grade { Id = 2, Subject = "Science", Score = 92, Weight = 25 },
+            new Grade { Id = 3, Subject = "History", Score = 78, Weight = 20 },
+            new Grade { Id = 4, Subject = "English", Score = 88, Weight = 25 }
+        };
+    }
+
+    private void SaveGrade()
+    {
+        if (EditingGrade != null)
+        {
+            // Update existing grade
+            var existing = GradeList.FirstOrDefault(g => g.Id == EditingGrade.Id);
+            if (existing != null)
+            {
+                existing.Subject = NewGrade.Subject;
+                existing.Score = NewGrade.Score;
+                existing.Weight = NewGrade.Weight;
+            }
+            EditingGrade = null;
+        }
+        else
+        {
+            // Add new grade
+            NewGrade.Id = GradeList.Count > 0 ? GradeList.Max(g => g.Id) + 1 : 1;
+            GradeList.Add(new Grade
+            {
+                Id = NewGrade.Id,
+                Subject = NewGrade.Subject,
+                Score = NewGrade.Score,
+                Weight = NewGrade.Weight
+            });
+        }
+
+        NewGrade = new Grade();
+    }
+
+    private void EditGrade(int id)
+    {
+        EditingGrade = GradeList.FirstOrDefault(g => g.Id == id);
+        if (EditingGrade != null)
+        {
+            NewGrade = new Grade
+            {
+                Id = EditingGrade.Id,
+                Subject = EditingGrade.Subject,
+                Score = EditingGrade.Score,
+                Weight = EditingGrade.Weight
+            };
+        }
+    }
+
+    private void DeleteGrade(int id)
+    {
+        var grade = GradeList.FirstOrDefault(g => g.Id == id);
+        if (grade != null)
+        {
+            GradeList.Remove(grade);
+        }
+    }
+
+    private void CancelEdit()
+    {
+        EditingGrade = null;
+        NewGrade = new Grade();
+    }
+
+    private double CalculateWeightedAverage()
+    {
+        if (!GradeList.Any()) return 0;
+        var totalWeight = GradeList.Sum(g => g.Weight);
+        var weightedSum = GradeList.Sum(g => g.Score * g.Weight / 100);
+        return totalWeight == 0 ? 0 : (weightedSum / (totalWeight / 100));
+    }
+
+    public class Grade
+    {
+        public int Id { get; set; }
+        public string Subject { get; set; } = "";
+        public double Score { get; set; }
+        public double Weight { get; set; }
+    }
+}

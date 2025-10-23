@@ -1,0 +1,181 @@
+@page "/calendar"
+@using EduFlow.Web.Models
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Calendar - EduFlow</PageTitle>
+
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-bold">Calendar</h1>
+        <button class="btn btn-primary" @onclick="GoToToday">Today</button>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="card">
+        <div class="card-header">
+            <div class="flex items-center justify-between">
+                <button class="btn btn-ghost" @onclick="GoToPreviousMonth" aria-label="Previous Month">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <h2 class="text-xl font-semibold">@CurrentMonth.ToString("MMMM yyyy")</h2>
+                <button class="btn btn-ghost" @onclick="GoToNextMonth" aria-label="Next Month">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="card-content">
+            <div class="grid grid-cols-7 gap-1 text-center">
+                @foreach (var dayName in DayNames)
+                {
+                    <div class="p-2 text-sm font-medium text-muted-foreground">@dayName</div>
+                }
+
+                @foreach (var day in CalendarDays)
+                {
+                    var isToday = day.Date.Date == DateTime.Today;
+                    var isOtherMonth = day.Date.Month != CurrentMonth.Month;
+                    var items = GetAssignmentsForDate(day.Date);
+
+                    <div class="min-h-[100px] p-2 border border-border 
+                        @(isOtherMonth ? "bg-muted/50" : "") 
+                        @(isToday ? "bg-primary/10 border-primary" : "")"
+                        style="cursor: pointer;"
+                        @onclick="@(() => SelectDate(day.Date))">
+
+                        <div class="text-sm font-medium @(isToday ? "text-primary font-bold" : isOtherMonth ? "text-muted-foreground" : "")">
+                            @day.Date.Day
+                        </div>
+
+                        @if (items.Count > 0)
+                        {
+                            <div class="mt-1 space-y-1">
+                                @foreach (var assignment in items.Take(3))
+                                {
+                                    <div class="text-xs p-1 rounded bg-blue-100 text-blue-800 truncate" title="@assignment.Title">
+                                        @assignment.Title
+                                    </div>
+                                }
+                                @if (items.Count > 3)
+                                {
+                                    <div class="text-xs text-muted-foreground">+@(items.Count - 3) more</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Selected Date Details -->
+    @if (SelectedDate.HasValue)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-lg font-semibold">
+                    Assignments for @SelectedDate.Value.ToString("MMMM dd, yyyy")
+                </h3>
+            </div>
+            <div class="card-content">
+                @{
+                    var selectedDateAssignments = GetAssignmentsForDate(SelectedDate.Value);
+                }
+
+                @if (selectedDateAssignments.Count == 0)
+                {
+                    <p class="text-muted-foreground text-center py-4">
+                        No assignments on this date.
+                    </p>
+                }
+                else
+                {
+                    <div class="space-y-3">
+                        @foreach (var assignment in selectedDateAssignments)
+                        {
+                            <div class="flex items-center justify-between p-3 rounded-lg border border-border">
+                                <div>
+                                    <h4 class="font-medium">@assignment.Title</h4>
+                                    <p class="text-sm text-muted-foreground">
+                                        Due: @assignment.DueDate.ToString("h:mm tt")
+                                    </p>
+                                </div>
+                                @if (!string.IsNullOrEmpty(assignment.Subject))
+                                {
+                                    <div class="badge badge-secondary text-xs">@assignment.Subject</div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<DateTime> OnDateClick { get; set; }
+
+    private DateTime CurrentMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+    private DateTime? SelectedDate = null;
+
+    private List<Assignment> AssignmentList = new()
+    {
+        new Assignment { Id = 1, Title = "Math Homework", DueDate = DateTime.Today.AddDays(1).AddHours(9), Subject = "Mathematics" },
+        new Assignment { Id = 2, Title = "Science Project", DueDate = DateTime.Today.AddDays(3).AddHours(14), Subject = "Science" },
+        new Assignment { Id = 3, Title = "History Essay", DueDate = DateTime.Today.AddDays(7).AddHours(23), Subject = "History" },
+        new Assignment { Id = 4, Title = "English Reading", DueDate = DateTime.Today.AddHours(16), Subject = "English" },
+        new Assignment { Id = 5, Title = "Chemistry Lab", DueDate = DateTime.Today.AddDays(2).AddHours(10), Subject = "Chemistry" }
+    };
+
+    private IReadOnlyList<string> DayNames => new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
+    private List<CalendarDay> CalendarDays => BuildCalendarDays(CurrentMonth);
+
+    private List<CalendarDay> BuildCalendarDays(DateTime month)
+    {
+        var firstOfMonth = new DateTime(month.Year, month.Month, 1);
+        var startOffset = (int)firstOfMonth.DayOfWeek;
+        var startDate = firstOfMonth.AddDays(-startOffset);
+
+        var days = new List<CalendarDay>();
+        for (int i = 0; i < 42; i++)
+        {
+            days.Add(new CalendarDay { Date = startDate.AddDays(i) });
+        }
+        return days;
+    }
+
+    private List<Assignment> GetAssignmentsForDate(DateTime date)
+    {
+        return AssignmentList
+            .Where(a => a.DueDate.Date == date.Date)
+            .OrderBy(a => a.DueDate)
+            .ToList();
+    }
+
+    private async Task SelectDate(DateTime date)
+    {
+        SelectedDate = date;
+        if (OnDateClick.HasDelegate)
+            await OnDateClick.InvokeAsync(date);
+    }
+
+    private void GoToPreviousMonth() => CurrentMonth = CurrentMonth.AddMonths(-1);
+    private void GoToNextMonth() => CurrentMonth = CurrentMonth.AddMonths(1);
+    private void GoToToday()
+    {
+        CurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        SelectedDate = DateTime.Today;
+    }
+
+    private class CalendarDay
+    {
+        public DateTime Date { get; set; }
+    }
+}

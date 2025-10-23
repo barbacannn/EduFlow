@@ -24,23 +24,39 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllUsers(CancellationToken ct = default)
     {
-        var users = await _userManager.Users
-            .Select(u => new { u.Id, u.Email, u.DisplayName, u.RoleName })
-            .ToListAsync(ct);
+        var users = await _userManager.Users.ToListAsync(ct);
+        var res = new List<UserDto>(users.Count);
 
-        return Ok(users);
+        foreach (var user in users)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault() ?? string.Empty;
+            
+            res.Add(new UserDto(
+                user.Id,
+                user.DisplayName ?? string.Empty,
+                user.Email ?? string.Empty,
+                role));
+        }
+        return Ok(res);
     }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetUserById(Guid id, CancellationToken ct = default)
     {
-        var user = await _userManager.Users
-            .Where(u => u.Id == id)
-            .Select(u => new UserDto(u.Id, u.UserName ?? "", u.Email ?? "", ""))
-            .FirstOrDefaultAsync(ct);
-
-        if (user == null) return NotFound();
-        return Ok(user);
+        var entity = await _userManager.FindByIdAsync(id.ToString());
+        if (entity == null) return NotFound("User not found");
+        
+        var roles = await _userManager.GetRolesAsync(entity);
+        var role = roles.FirstOrDefault() ?? string.Empty;
+        
+        var dto = new UserDto(
+            entity.Id,
+            entity.DisplayName ?? string.Empty,
+            entity.Email ?? string.Empty,
+            role);
+        
+        return Ok(dto);
     }
 
     [HttpPost]
@@ -58,21 +74,37 @@ public class UsersController : ControllerBase
         if (!res.Succeeded)
             return BadRequest(res.Errors.Select(e => $"{e.Code}: {e.Description}"));
 
+        if (await _roleManager.RoleExistsAsync("student"))
+            await _userManager.AddToRoleAsync(user, "student");
+        
         return Ok(new { user.Id, user.Email });
     }
 
     [HttpPut("{id:guid}/role")]
-    public async Task<IActionResult> ChangeUserRole(Guid id, [FromBody] string roleName)
+    public async Task<IActionResult> ChangeUserRole(Guid id, [FromBody] ChangeRoleRequest req)
     {
+        if (string.IsNullOrWhiteSpace(req.Role))
+            return BadRequest("Role is required.");
+
+        var roleName = req.Role.Trim();
+
         var user = await _userManager.FindByIdAsync(id.ToString());
         if (user == null) return NotFound("User not found");
 
         if (!await _roleManager.RoleExistsAsync(roleName))
-            return BadRequest($"Role {roleName} does not exist");
+            return BadRequest($"Role '{roleName}' does not exist.");
 
-        var res = await _userManager.AddToRoleAsync(user, roleName);
-        if (!res.Succeeded)
-            return BadRequest(res.Errors.Select(e => $"{e.Code}: {e.Description}"));
+        var currentRoles = await _userManager.GetRolesAsync(user);
+        if (currentRoles.Count > 0)
+        {
+            var removeRes = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            if (!removeRes.Succeeded)
+                return BadRequest(removeRes.Errors.Select(e => $"{e.Code}: {e.Description}"));
+        }
+
+        var addRes = await _userManager.AddToRoleAsync(user, roleName);
+        if (!addRes.Succeeded)
+            return BadRequest(addRes.Errors.Select(e => $"{e.Code}: {e.Description}"));
 
         return NoContent();
     }

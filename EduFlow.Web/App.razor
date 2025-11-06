@@ -1,4 +1,7 @@
-﻿<CascadingBlazorBootstrap>
+﻿@using BlazorBootstrap
+@using BlazorBootstrap.Components
+
+<CascadingBlazorBootstrap>
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />

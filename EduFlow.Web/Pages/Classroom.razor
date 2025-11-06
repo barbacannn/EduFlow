@@ -1,16 +1,174 @@
 @page "/classroom"
 
-<PageTitle>Classroom - EduFlow</PageTitle>
+@using System
+@using System.Collections.Generic
 
-<div class="space-y-6">
-    <h1 class="text-3xl font-bold">Classroom</h1>
-    
-    <div class="card">
-        <div class="card-header">
-            <h2 class="text-xl font-semibold">Classroom Management</h2>
+<PageTitle>Classrooms</PageTitle>
+
+<div class="container">
+    <h1>Classroom Dashboard</h1>
+
+    @if (ActiveClassroom == null)
+    {
+        <div class="classroom-grid">
+            @foreach (var c in Classrooms)
+            {
+                <div class="classroom-card" @onclick="@(() => SelectClassroom(c))">
+                    <h3>@c.Name</h3>
+                    <p><strong>Subject:</strong> @c.Subject</p>
+                    <p><strong>Teacher:</strong> @c.TeacherName</p>
+                    <p><strong>Students:</strong> @c.Students.Count</p>
+                    <button class="button">Enter Classroom</button>
+                </div>
+            }
         </div>
-        <div class="card-content">
-            <p class="text-muted-foreground">Classroom management functionality will be implemented here.</p>
+    }
+    else
+    {
+        <div class="classroom-detail">
+            <button class="back-btn" @onclick="DeselectClassroom">← Back</button>
+            <h2>@ActiveClassroom.Name (@ActiveClassroom.Subject)</h2>
+            <p><strong>Teacher:</strong> @ActiveClassroom.TeacherName</p>
+
+            <div class="tabs">
+                <button class="@GetTabClass("Announcements")" @onclick="@(() => ActiveTab = "Announcements")">Announcements</button>
+                <button class="@GetTabClass("Assignments")" @onclick="@(() => ActiveTab = "Assignments")">Assignments</button>
+                <button class="@GetTabClass("Resources")" @onclick="@(() => ActiveTab = "Resources")">Resources</button>
+                <button class="@GetTabClass("Chat")" @onclick="@(() => ActiveTab = "Chat")">Chat</button>
+            </div>
+
+            <div class="tab-content">
+                @if (ActiveTab == "Announcements")
+                {
+                    <h3>Announcements</h3>
+                    <ul>
+                        @foreach (var note in ActiveClassroom.Announcements)
+                        {
+                            <li>@note</li>
+                        }
+                    </ul>
+                    <input type="text" placeholder="New announcement..." @bind="NewAnnouncement" />
+                    <button class="button" @onclick="AddAnnouncement">Post</button>
+                }
+                else if (ActiveTab == "Assignments")
+                {
+                    <h3>Assignments</h3>
+                    <p>Assignment feature coming soon...</p>
+                }
+                else if (ActiveTab == "Resources")
+                {
+                    <h3>Resources</h3>
+                    <p>Upload and view shared resources here (feature coming soon).</p>
+                }
+                else if (ActiveTab == "Chat")
+                {
+                    <h3>Classroom Chat</h3>
+                    <div class="chat-box">
+                        @foreach (var msg in ActiveClassroom.Messages)
+                        {
+                            <div class="chat-message">
+                                <strong>@msg.User:</strong> @msg.Message
+                            </div>
+                        }
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type a message..." @bind="NewMessage" @onkeydown="HandleKeyPress" />
+                        <button class="button" @onclick="SendMessage">Send</button>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
+    }
 </div>
+
+@code {
+    private List<ClassroomModel> Classrooms = new();
+    private ClassroomModel? ActiveClassroom;
+    private string ActiveTab = "Announcements";
+    private string NewMessage = "";
+    private string NewAnnouncement = "";
+
+    protected override void OnInitialized()
+    {
+        // Mock data for now (later can be fetched from API)
+        Classrooms = new List<ClassroomModel>
+        {
+            new ClassroomModel
+            {
+                Id = 1,
+                Name = "Mathematics 101",
+                Subject = "Math",
+                TeacherName = "Mr. Johnson",
+                Students = new() { "Alice", "Bob", "Charlie" },
+                Announcements = new() { "Welcome to class!", "Exam next week." },
+                Messages = new() { new ChatMessage { User = "Alice", Message = "Good morning!" } }
+            },
+            new ClassroomModel
+            {
+                Id = 2,
+                Name = "History 202",
+                Subject = "History",
+                TeacherName = "Ms. Brown",
+                Students = new() { "Daniel", "Eva" },
+                Announcements = new() { "Field trip on Friday." },
+                Messages = new()
+            }
+        };
+    }
+
+    private void SelectClassroom(ClassroomModel classroom)
+    {
+        ActiveClassroom = classroom;
+        ActiveTab = "Announcements";
+    }
+
+    private void DeselectClassroom()
+    {
+        ActiveClassroom = null;
+    }
+
+    private void AddAnnouncement()
+    {
+        if (!string.IsNullOrWhiteSpace(NewAnnouncement) && ActiveClassroom != null)
+        {
+            ActiveClassroom.Announcements.Add(NewAnnouncement);
+            NewAnnouncement = "";
+        }
+    }
+
+    private void SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(NewMessage) && ActiveClassroom != null)
+        {
+            ActiveClassroom.Messages.Add(new ChatMessage { User = "You", Message = NewMessage });
+            NewMessage = "";
+        }
+    }
+
+    private void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") SendMessage();
+    }
+
+    private string GetTabClass(string tabName)
+        => ActiveTab == tabName ? "tab active" : "tab";
+
+    // Models
+    public class ClassroomModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Subject { get; set; } = "";
+        public string TeacherName { get; set; } = "";
+        public List<string> Students { get; set; } = new();
+        public List<string> Announcements { get; set; } = new();
+        public List<ChatMessage> Messages { get; set; } = new();
+    }
+
+    public class ChatMessage
+    {
+        public string User { get; set; } = "";
+        public string Message { get; set; } = "";
+        public DateTime Timestamp { get; set; } = DateTime.Now;
+    }
+}

@@ -57,6 +57,91 @@ body {
     color: hsl(var(--foreground));
 }
 
+.container {
+    padding: 2rem;
+}
+
+.classroom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.classroom-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.classroom-card:hover {
+    transform: scale(1.02);
+}
+
+.button {
+    background-color: #0070f3;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.button:hover {
+    background-color: #005bb5;
+}
+
+.back-btn {
+    margin-bottom: 1rem;
+    background: none;
+    border: none;
+    color: #0070f3;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.tab {
+    border: none;
+    background: none;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    color: #0070f3;
+    border-bottom: 2px solid #0070f3;
+}
+
+.chat-box {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.chat-message {
+    margin-bottom: 0.5rem;
+}
+
+.chat-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
 /* Utility Classes */
 .min-h-screen {
     min-height: 100vh;
@@ -637,4 +722,25 @@ a,
 
 .loading-progress-text:after {
     content: var(--blazor-load-percentage-text, "Loading");
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.sidebar-item.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
 }
